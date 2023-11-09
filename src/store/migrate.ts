@@ -11,13 +11,14 @@ import {
   LocalStorageInterfaceV5ToV6,
   LocalStorageInterfaceV6ToV7,
   LocalStorageInterfaceV7oV8,
+  LocalStorageInterfaceV8ToV9,
 } from '@type/chat';
 import {
   _defaultChatConfig,
   defaultModel,
   defaultUserMaxToken,
 } from '@constants/chat';
-import { officialAPIEndpoint } from '@constants/auth';
+import { defaultAPIEndpoint, officialAPIEndpoint } from '@constants/auth';
 import defaultPrompts from '@constants/prompt';
 
 export const migrateV0 = (persistedState: LocalStorageInterfaceV0ToV1) => {
@@ -103,4 +104,25 @@ export const migrateV7 = (persistedState: LocalStorageInterfaceV7oV8) => {
     if (chat.folder) chat.folder = folderNameToIdMap[chat.folder];
     chat.id = uuidv4();
   });
+};
+
+export const migrateV8 = (persistedState: LocalStorageInterfaceV8ToV9) => {
+  if (
+    persistedState.defaultChatConfig.model === 'gpt-3.5-turbo'
+  ) {
+    // change default to openchat_v3.2_mistral
+    persistedState.defaultChatConfig.model = defaultModel;
+    persistedState.defaultChatConfig.max_tokens = defaultUserMaxToken;
+    persistedState.apiEndpoint = defaultAPIEndpoint;
+
+    persistedState.chats.forEach((chat) => {
+      console.log(chat.config)
+      if (chat.config.model === 'gpt-3.5-turbo') {
+        chat.config.model = defaultModel;
+        if (chat.config.max_tokens < defaultUserMaxToken) {
+          chat.config.max_tokens = defaultUserMaxToken;
+        }
+      }
+    });
+  }
 };

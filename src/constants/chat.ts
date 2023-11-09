@@ -18,6 +18,7 @@ Carefully heed the user's instructions.
 Respond using Markdown.`;
 
 export const modelOptions: ModelOptions[] = [
+  'openchat_v3.2_mistral',
   'gpt-3.5-turbo',
   'gpt-3.5-turbo-16k',
   'gpt-4',
@@ -28,9 +29,10 @@ export const modelOptions: ModelOptions[] = [
   // 'gpt-4-32k-0314',
 ];
 
-export const defaultModel = 'gpt-3.5-turbo';
+export const defaultModel = 'openchat_v3.2_mistral';
 
 export const modelMaxToken = {
+  'openchat_v3.2_mistral': 8192,
   'gpt-3.5-turbo': 4096,
   'gpt-3.5-turbo-0301': 4096,
   'gpt-3.5-turbo-0613': 4096,
@@ -46,6 +48,10 @@ export const modelMaxToken = {
 };
 
 export const modelCost = {
+  'openchat_v3.2_mistral': {
+    prompt: { price: 0.0, unit: 1000 },
+    completion: { price: 0.0, unit: 1000 },
+  },
   'gpt-3.5-turbo': {
     prompt: { price: 0.0015, unit: 1000 },
     completion: { price: 0.002, unit: 1000 },
@@ -96,7 +102,7 @@ export const modelCost = {
   },
 };
 
-export const defaultUserMaxToken = 4000;
+export const defaultUserMaxToken = 8000;
 
 export const _defaultChatConfig: ConfigInterface = {
   model: defaultModel,
